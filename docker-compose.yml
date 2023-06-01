@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - maria_db
+    links:
+      - maria_db:app_db
+  maria_db:
+    image: "mariadb:latest"
+    restart: always
+    ports:
+      - 3306
+    environment:
+      MYSQL_DATABASE: springdb
+      MYSQL_USER: java_to_dev
+      MYSQL_PASSWORD: nE5kMc7JCGNqwDQM
+      MYSQL_ROOT_PASSWORD: root

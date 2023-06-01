@@ -2,6 +2,8 @@ package com.spring.springbootapp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "images")
 public class Image
@@ -14,8 +16,6 @@ public class Image
     @Column(columnDefinition = "TEXT")
     private String dataImage;
     private String extension;
-    private String path;
-
     private String slug;
 
     public Image(String name, String dataImage) {
@@ -43,14 +43,6 @@ public class Image
         this.slug = slug;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getName() {
         return name;
     }
@@ -73,5 +65,12 @@ public class Image
 
     public Long getId() {
         return id;
+    }
+
+    public void setExtensionFromBase64()
+    {
+        String[] cleanDataImage = (this.getDataImage()).split(",");
+        String extension = cleanDataImage[0].substring(cleanDataImage[0].indexOf('/')+1, cleanDataImage[0].indexOf(';'));
+        this.setExtension(extension);
     }
 }

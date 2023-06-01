@@ -6,16 +6,23 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - maria_db
+      maria_db:
+        condition: service_healthy
     links:
       - maria_db:app_db
   maria_db:
     image: "mariadb:latest"
     restart: always
     ports:
-      - 3306
+      - 3306:3306
     environment:
-      MYSQL_DATABASE: springdb
-      MYSQL_USER: java_to_dev
-      MYSQL_PASSWORD: nE5kMc7JCGNqwDQM
-      MYSQL_ROOT_PASSWORD: root
+      MARIADB_DATABASE: springdb
+      MARIADB_USER: java_to_dev
+      MARIADB_PASSWORD: nE5kMc7JCGNqwDQM
+      MARIADB_ROOT_PASSWORD: root
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MARIADB_USER --password=$$MARIADB_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55

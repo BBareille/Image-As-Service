@@ -1,11 +1,14 @@
 # Image-As-Service
 
 
-===========================================================================
+<br>
 
-GET => localhost:8080/api/image/{slug} // This link can be used  for <img src="{url}" />
+GET => localhost:8080/api/image/{slug} // This link can be used  for 
+```
+<img src="{url}" />
+```
 
-===========================================================================
+<br>
 
 POST => localhost:8080/api/image
 
@@ -23,7 +26,7 @@ RETURN
   200 Success if it worked
 
 
-===========================================================================
+<br>
 
 POST => localhost:8080/api/image/all
 
@@ -54,5 +57,4 @@ Body Request =>
 RETURN 
   200 Success if it worked
 
-
-===========================================================================
+<br>

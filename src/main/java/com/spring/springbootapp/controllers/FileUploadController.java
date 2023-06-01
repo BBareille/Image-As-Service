@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,7 +27,6 @@ public class FileUploadController
     StorageServiceImpl storageService;
     @Autowired
     ImageRepository imageRepository;
-
     @PostMapping
     @ResponseBody
     public ResponseEntity<Image> handleFileUpload(@RequestBody Image image) throws IOException {
@@ -34,17 +34,19 @@ public class FileUploadController
         return new ResponseEntity<>(img, HttpStatus.OK);
     }
 
-    @GetMapping
-    @ResponseBody
-    public Image getOne(@RequestParam(name = "id") Integer id)
+    @GetMapping("/{slug}")
+    public ResponseEntity<byte[]> getOneImageSlug(@PathVariable("slug") String slug)
     {
-        Optional<Image> img = imageRepository.findById(id);
-        if (img.isPresent())
+        Optional<Image> img = storageService.findBySlug(slug);
+        if(img.isPresent())
         {
-            return img.get();
+            String[] cleanDataImage = (img.get().getDataImage()).split(",");
+            byte[] decodedBytes = Base64.getDecoder().decode(cleanDataImage[1]);
+            return new ResponseEntity<>(decodedBytes, HttpStatus.OK);
         }
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 }
